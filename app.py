@@ -1,6 +1,7 @@
-from flask import Flask
+from flask import Flask, app
 from database import db
 from models import Transaction
+import os
 
 def create_app():
     app = Flask(__name__)
@@ -8,7 +9,7 @@ def create_app():
     # Konfigurasi database — simpan di file lokal bernama budget.db
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///budget.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SECRET_KEY'] = 'budget-tracker-secret-123'
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key')
 
     # Hubungkan database ke aplikasi
     db.init_app(app)

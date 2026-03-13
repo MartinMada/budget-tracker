@@ -1,17 +1,17 @@
 from flask import Blueprint, request, jsonify, render_template
 from flask_login import login_required, current_user
 from database import db
-from models import Transaction
+from models import Transaction,Category
 from datetime import datetime
 
 transactions_bp = Blueprint('transactions', __name__)
 
 # Kategori yang diizinkan
-VALID_CATEGORIES = ['Makan','Transport','Belanja','Hiburan','Kesehatan','Gaji','Lainnya']
+DEFAULT_CATEGORIES = ['Makan','Transport','Belanja','Hiburan',
+                      'Kesehatan','Gaji','Freelance','Investasi','Lainnya']
 VALID_TYPES      = ['income', 'expense']
 
-def validate_transaction(data):
-    """Validasi data transaksi. Return (True, None) atau (False, pesan_error)"""
+def validate_transaction(data, user_id=None):
     if not data.get('title') or not str(data['title']).strip():
         return False, 'Judul wajib diisi.'
 
@@ -27,11 +27,22 @@ def validate_transaction(data):
     except (ValueError, TypeError):
         return False, 'Nominal harus berupa angka.'
 
-    if data.get('type') not in VALID_TYPES:
+    if data.get('type') not in ['income', 'expense']:
         return False, 'Tipe transaksi tidak valid.'
 
-    if data.get('category') not in VALID_CATEGORIES:
-        return False, 'Kategori tidak valid.'
+    # ── Validasi kategori: cek default + custom milik user ──
+    category = data.get('category')
+    if category not in DEFAULT_CATEGORIES:
+        # Cek apakah ada di kategori custom user
+        if user_id:
+            custom_exists = Category.query.filter_by(
+                name=category,
+                user_id=user_id
+            ).first()
+            if not custom_exists:
+                return False, 'Kategori tidak valid.'
+        else:
+            return False, 'Kategori tidak valid.'
 
     try:
         datetime.strptime(data.get('date', ''), '%Y-%m-%d')
@@ -83,7 +94,7 @@ def add_transaction():
     if not data:
         return jsonify({'error': 'Data tidak valid.'}), 400
 
-    is_valid, error_msg = validate_transaction(data)
+    is_valid, error_msg = validate_transaction(data, user_id=current_user.id)
     if not is_valid:
         return jsonify({'error': error_msg}), 400
 
@@ -127,7 +138,7 @@ def update_transaction(id):
         return jsonify({'error': 'Data tidak valid.'}), 400
 
     # Validasi pakai fungsi yang sama
-    is_valid, error_msg = validate_transaction(data)
+    is_valid, error_msg = validate_transaction(data, user_id=current_user.id)
     if not is_valid:
         return jsonify({'error': error_msg}), 400
 

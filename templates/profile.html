@@ -4,206 +4,332 @@
 
 <!-- Page Header -->
 <div class="mb-4">
-  <h1 class="page-title">Profil Saya</h1>
-  <p class="page-subtitle">Kelola informasi akun Anda</p>
+    <h1 class="page-title">Profil Saya</h1>
+    <p class="page-subtitle">Kelola informasi akun Anda</p>
 </div>
 
 <!-- Flash Messages -->
 {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    {% for category, message in messages %}
-      <div class="alert-{{ category }} mb-3">{{ message }}</div>
-    {% endfor %}
-  {% endif %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert-{{ category }} mb-3">{{ message }}</div>
+{% endfor %}
+{% endif %}
 {% endwith %}
 
 <div class="row g-4">
 
-  <!-- ── Kolom Kiri: Info Akun ── -->
-  <div class="col-lg-4">
+    <!-- ── Kolom Kiri: Info Akun ── -->
+    <div class="col-lg-4">
 
-    <!-- Kartu Info -->
-    <div class="card mb-4">
-      <div class="card-body text-center py-4">
+        <!-- Kartu Info -->
+        <div class="card mb-4">
+            <div class="card-body text-center py-4">
 
-        <!-- Avatar -->
-        <div style="width:80px;height:80px;border-radius:50%;
+                <!-- Avatar -->
+                <div style="width:80px;height:80px;border-radius:50%;
                     background:linear-gradient(135deg,var(--accent),#00d4aa);
                     display:flex;align-items:center;justify-content:center;
                     font-size:2rem;margin:0 auto 16px">
-          {{ current_user.username[0].upper() }}
-        </div>
+                    {{ current_user.username[0].upper() }}
+                </div>
 
-        <h5 style="font-family:'Syne',sans-serif;font-weight:700;
+                <h5 style="font-family:'Syne',sans-serif;font-weight:700;
                    margin-bottom:4px">
-          {{ current_user.username }}
-        </h5>
-        <p style="color:var(--muted);font-size:13px;margin-bottom:0">
-          {{ current_user.email }}
-        </p>
-      </div>
-    </div>
-
-    <!-- Kartu Statistik -->
-    <div class="card">
-      <div class="card-header">
-        <div class="header-icon"
-             style="background:rgba(0,212,170,0.12);color:var(--income)">
-          <i class="bi bi-bar-chart"></i>
+                    {{ current_user.username }}
+                </h5>
+                <p style="color:var(--muted);font-size:13px;margin-bottom:0">
+                    {{ current_user.email }}
+                </p>
+            </div>
         </div>
-        Statistik Akun
-      </div>
-      <div class="card-body d-flex flex-column gap-3">
 
-        <div style="display:flex;justify-content:space-between;
+        <!-- Kartu Statistik -->
+        <div class="card">
+            <div class="card-header">
+                <div class="header-icon" style="background:rgba(0,212,170,0.12);color:var(--income)">
+                    <i class="bi bi-bar-chart"></i>
+                </div>
+                Statistik Akun
+            </div>
+            <div class="card-body d-flex flex-column gap-3">
+
+                <div style="display:flex;justify-content:space-between;
                     align-items:center;padding:12px;
                     background:var(--bg3);border-radius:10px;
                     border:1px solid var(--border)">
-          <div style="font-size:13px;color:var(--muted)">
-            <i class="bi bi-calendar3 me-2"></i>Bergabung sejak
-          </div>
-          <div style="font-size:13px;font-weight:500">
-            {{ current_user.created_at.strftime('%d %b %Y') }}
-          </div>
-        </div>
+                    <div style="font-size:13px;color:var(--muted)">
+                        <i class="bi bi-calendar3 me-2"></i>Bergabung sejak
+                    </div>
+                    <div style="font-size:13px;font-weight:500">
+                        {{ current_user.created_at.strftime('%d %b %Y') }}
+                    </div>
+                </div>
 
-        <div style="display:flex;justify-content:space-between;
+                <div style="display:flex;justify-content:space-between;
                     align-items:center;padding:12px;
                     background:var(--bg3);border-radius:10px;
                     border:1px solid var(--border)">
-          <div style="font-size:13px;color:var(--muted)">
-            <i class="bi bi-arrow-left-right me-2"></i>Total transaksi
-          </div>
-          <div style="font-size:13px;font-weight:500;color:var(--accent)">
-            {{ total_tx }} transaksi
-          </div>
-        </div>
+                    <div style="font-size:13px;color:var(--muted)">
+                        <i class="bi bi-arrow-left-right me-2"></i>Total transaksi
+                    </div>
+                    <div style="font-size:13px;font-weight:500;color:var(--accent)">
+                        {{ total_tx }} transaksi
+                    </div>
+                </div>
 
-        <div style="display:flex;justify-content:space-between;
+                <div style="display:flex;justify-content:space-between;
                     align-items:center;padding:12px;
                     background:var(--bg3);border-radius:10px;
                     border:1px solid var(--border)">
-          <div style="font-size:13px;color:var(--muted)">
-            <i class="bi bi-shield-check me-2"></i>Status akun
-          </div>
-          <div style="font-size:12px;font-weight:500;color:var(--income);
+                    <div style="font-size:13px;color:var(--muted)">
+                        <i class="bi bi-shield-check me-2"></i>Status akun
+                    </div>
+                    <div style="font-size:12px;font-weight:500;color:var(--income);
                       background:rgba(0,212,170,0.1);padding:3px 10px;
                       border-radius:20px">
-            Aktif
-          </div>
+                        Aktif
+                    </div>
+                </div>
+
+            </div>
         </div>
 
-      </div>
     </div>
 
-  </div>
+    <!-- ── Kolom Kanan: Form Edit ── -->
+    <div class="col-lg-8 d-flex flex-column gap-4">
 
-  <!-- ── Kolom Kanan: Form Edit ── -->
-  <div class="col-lg-8 d-flex flex-column gap-4">
+        <!-- Form Update Info -->
+        <div class="card">
+            <div class="card-header">
+                <div class="header-icon" style="background:rgba(123,97,255,0.15);color:var(--accent)">
+                    <i class="bi bi-person"></i>
+                </div>
+                Informasi Akun
+            </div>
+            <div class="card-body">
+                <form method="POST" action="/profile/update-info">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-    <!-- Form Update Info -->
-    <div class="card">
-      <div class="card-header">
-        <div class="header-icon"
-             style="background:rgba(123,97,255,0.15);color:var(--accent)">
-          <i class="bi bi-person"></i>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Username</label>
+                            <input type="text" name="username" class="form-control" value="{{ current_user.username }}"
+                                required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control" value="{{ current_user.email }}"
+                                required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary mt-4" style="padding:10px 24px">
+                        <i class="bi bi-check-lg me-1"></i> Simpan Perubahan
+                    </button>
+                </form>
+            </div>
         </div>
-        Informasi Akun
-      </div>
-      <div class="card-body">
-        <form method="POST" action="/profile/update-info">
-          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-          <div class="row g-3">
-            <div class="col-md-6">
-              <label class="form-label">Username</label>
-              <input type="text" name="username" class="form-control"
-                     value="{{ current_user.username }}" required>
+        <!-- Form Ganti Password -->
+        <div class="card">
+            <div class="card-header">
+                <div class="header-icon" style="background:rgba(245,158,11,0.12);color:#f59e0b">
+                    <i class="bi bi-lock"></i>
+                </div>
+                Ganti Password
             </div>
-            <div class="col-md-6">
-              <label class="form-label">Email</label>
-              <input type="email" name="email" class="form-control"
-                     value="{{ current_user.email }}" required>
-            </div>
-          </div>
+            <div class="card-body">
+                <form method="POST" action="/profile/update-password">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-          <button type="submit" class="btn btn-primary mt-4"
-                  style="padding:10px 24px">
-            <i class="bi bi-check-lg me-1"></i> Simpan Perubahan
-          </button>
-        </form>
-      </div>
-    </div>
+                    <div class="d-flex flex-column gap-3">
+                        <div>
+                            <label class="form-label">Password Saat Ini</label>
+                            <input type="password" name="current_password" class="form-control"
+                                placeholder="Masukkan password saat ini" required>
+                        </div>
+                        <div>
+                            <label class="form-label">Password Baru</label>
+                            <input type="password" name="new_password" class="form-control"
+                                placeholder="Minimal 8 karakter, huruf besar, angka, simbol" required>
+                        </div>
+                        <div>
+                            <label class="form-label">Konfirmasi Password Baru</label>
+                            <input type="password" name="confirm_password" class="form-control"
+                                placeholder="Ulangi password baru" required>
+                        </div>
+                    </div>
 
-    <!-- Form Ganti Password -->
-    <div class="card">
-      <div class="card-header">
-        <div class="header-icon"
-             style="background:rgba(245,158,11,0.12);color:#f59e0b">
-          <i class="bi bi-lock"></i>
-        </div>
-        Ganti Password
-      </div>
-      <div class="card-body">
-        <form method="POST" action="/profile/update-password">
-          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-
-          <div class="d-flex flex-column gap-3">
-            <div>
-              <label class="form-label">Password Saat Ini</label>
-              <input type="password" name="current_password"
-                     class="form-control"
-                     placeholder="Masukkan password saat ini" required>
-            </div>
-            <div>
-              <label class="form-label">Password Baru</label>
-              <input type="password" name="new_password"
-                     class="form-control"
-                     placeholder="Minimal 8 karakter, huruf besar, angka, simbol"
-                     required>
-            </div>
-            <div>
-              <label class="form-label">Konfirmasi Password Baru</label>
-              <input type="password" name="confirm_password"
-                     class="form-control"
-                     placeholder="Ulangi password baru" required>
-            </div>
-          </div>
-
-          <!-- Syarat password -->
-          <div style="background:var(--bg3);border:1px solid var(--border);
+                    <!-- Syarat password -->
+                    <div style="background:var(--bg3);border:1px solid var(--border);
                       border-radius:10px;padding:12px 16px;margin-top:16px">
-            <p style="font-size:12px;color:var(--muted);margin-bottom:8px;
+                        <p style="font-size:12px;color:var(--muted);margin-bottom:8px;
                       font-weight:500">
-              Syarat password baru:
-            </p>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
-              <span style="font-size:12px;color:var(--muted)">
-                ✓ Minimal 8 karakter
-              </span>
-              <span style="font-size:12px;color:var(--muted)">
-                ✓ Minimal 1 huruf kapital
-              </span>
-              <span style="font-size:12px;color:var(--muted)">
-                ✓ Minimal 1 angka
-              </span>
-              <span style="font-size:12px;color:var(--muted)">
-                ✓ Minimal 1 karakter spesial
-              </span>
-            </div>
-          </div>
+                            Syarat password baru:
+                        </p>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+                            <span style="font-size:12px;color:var(--muted)">
+                                ✓ Minimal 8 karakter
+                            </span>
+                            <span style="font-size:12px;color:var(--muted)">
+                                ✓ Minimal 1 huruf kapital
+                            </span>
+                            <span style="font-size:12px;color:var(--muted)">
+                                ✓ Minimal 1 angka
+                            </span>
+                            <span style="font-size:12px;color:var(--muted)">
+                                ✓ Minimal 1 karakter spesial
+                            </span>
+                        </div>
+                    </div>
 
-          <button type="submit" class="btn btn-primary mt-4"
-                  style="padding:10px 24px;
+                    <button type="submit" class="btn btn-primary mt-4" style="padding:10px 24px;
                          background:linear-gradient(135deg,#f59e0b,#fbbf24) !important;
                          box-shadow:0 4px 14px rgba(245,158,11,0.3) !important">
-            <i class="bi bi-lock me-1"></i> Ganti Password
-          </button>
-        </form>
-      </div>
-    </div>
+                        <i class="bi bi-lock me-1"></i> Ganti Password
+                    </button>
+                </form>
+            </div>
+        </div>
 
-  </div>
+        <!-- Form Kelola Kategori -->
+        <div class="card">
+            <div class="card-header">
+                <div class="header-icon" style="background:rgba(0,229,255,0.1);color:var(--neon-cyan)">
+                    <i class="bi bi-tags"></i>
+                </div>
+                Kategori Custom
+            </div>
+            <div class="card-body">
+
+                <!-- Form Tambah -->
+                <div class="row g-2 mb-4">
+                    <div class="col-5">
+                        <label class="form-label">Nama Kategori</label>
+                        <input type="text" id="newCatName" class="form-control"
+                            placeholder="Contoh: Pendapatan Sampingan">
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label">Tipe</label>
+                        <select id="newCatType" class="form-select">
+                            <option value="expense">📤 Pengeluaran</option>
+                            <option value="income">📥 Pemasukan</option>
+                        </select>
+                    </div>
+                    <div class="col-3 d-flex align-items-end">
+                        <button onclick="addCategory()" class="btn btn-primary w-100">
+                            <i class="bi bi-plus-lg"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Daftar Kategori Custom -->
+                <div id="categoryList">
+                    <p style="color:var(--muted2);font-size:13px">Memuat kategori...</p>
+                </div>
+
+                <p style="font-size:11px;color:var(--muted);margin-top:12px;
+              letter-spacing:0.04em">
+                    ⭐ Kategori custom Anda • Maksimal 20 kategori
+                </p>
+            </div>
+        </div>
+
+    </div>
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+<script>
+function getCsrfToken() {
+  return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+}
+
+// Load saat halaman dibuka
+loadProfileCategories();
+
+async function loadProfileCategories() {
+  const res  = await fetch('/api/categories');
+  const data = await res.json();
+
+  const container = document.getElementById('categoryList');
+  const allCustom = [
+    ...(data.income  || []).filter(c => !c.is_default),
+    ...(data.expense || []).filter(c => !c.is_default)
+  ];
+
+  if (allCustom.length === 0) {
+    container.innerHTML = `
+      <p style="color:var(--muted2);font-size:13px;text-align:center;
+                padding:20px 0">
+        Belum ada kategori custom. Tambahkan di atas!
+      </p>`;
+    return;
+  }
+
+  container.innerHTML = allCustom.map(c => `
+    <div style="display:flex;justify-content:space-between;align-items:center;
+                padding:10px 12px;background:var(--bg3);border-radius:4px;
+                border:1px solid rgba(0,255,180,0.1);margin-bottom:6px">
+      <div>
+        <span style="font-weight:600;color:var(--text);font-size:14px">
+          ⭐ ${c.name}
+        </span>
+        <span style="font-size:10px;margin-left:8px;padding:2px 8px;
+                     border-radius:2px;font-family:'Orbitron',sans-serif;
+                     ${c.type === 'income'
+                       ? 'color:var(--neon-green);background:rgba(0,255,180,0.08);border:1px solid rgba(0,255,180,0.2)'
+                       : 'color:var(--neon-pink);background:rgba(255,0,170,0.08);border:1px solid rgba(255,0,170,0.2)'}">
+          ${c.type === 'income' ? 'PEMASUKAN' : 'PENGELUARAN'}
+        </span>
+      </div>
+      <button onclick="deleteCategory(${c.id})"
+              class="btn-delete" title="Hapus">
+        <i class="bi bi-trash3"></i>
+      </button>
+    </div>
+  `).join('');
+}
+
+async function addCategory() {
+  const name = document.getElementById('newCatName').value.trim();
+  const type = document.getElementById('newCatType').value;
+
+  if (!name) {
+    alert('Nama kategori wajib diisi!');
+    return;
+  }
+
+  const res = await fetch('/api/categories', {
+    method : 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken' : getCsrfToken()
+    },
+    body: JSON.stringify({ name, type })
+  });
+
+  const data = await res.json();
+  if (res.ok) {
+    document.getElementById('newCatName').value = '';
+    loadProfileCategories();
+  } else {
+    alert(data.error || 'Gagal menambahkan kategori.');
+  }
+}
+
+async function deleteCategory(id) {
+  if (!confirm('Hapus kategori ini?')) return;
+
+  const res = await fetch(`/api/categories/${id}`, {
+    method : 'DELETE',
+    headers: { 'X-CSRFToken': getCsrfToken() }
+  });
+
+  if (res.ok) loadProfileCategories();
+}
+</script>
 {% endblock %}

@@ -5,7 +5,35 @@ const now = new Date();
 document.getElementById('filterMonth').value =
   `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
 
-loadTransactions();
+loadCategories().then(() => loadTransactions());
+
+document.getElementById('type').addEventListener('change', loadCategories);
+
+async function loadCategories() {
+  const type = document.getElementById('type').value;
+  const res  = await fetch(`/api/categories?type=${type}`);
+  const data = await res.json();
+
+  const select   = document.getElementById('category');
+  const current  = select.value;
+  const cats     = data[type] || [];
+
+  select.innerHTML = cats.map(c => `
+    <option value="${c.name}" ${c.name === current ? 'selected' : ''}>
+      ${c.is_default ? getCategoryEmoji(c.name) : '⭐'} ${c.name}
+      ${!c.is_default ? '(custom)' : ''}
+    </option>
+  `).join('');
+}
+
+function getCategoryEmoji(name) {
+  const map = {
+    'Makan':'🍔','Transport':'🚗','Belanja':'🛍️','Hiburan':'🎮',
+    'Kesehatan':'💊','Gaji':'💰','Freelance':'💻','Investasi':'📈',
+    'Lainnya':'📦'
+  };
+  return map[name] || '📦';
+}
 
 // ── CSRF Token ───────────────────────────────────────────────
 function getCsrfToken() {
@@ -217,4 +245,13 @@ function showToast(message, type = 'success') {
   toast.textContent = message;
   document.body.appendChild(toast);
   setTimeout(() => toast.remove(), 3000);
+}
+
+// ── Export PDF ───────────────────────────────────────────────
+function exportPDF() {
+  const month = document.getElementById('filterMonth').value;
+  const url   = `/api/export/pdf${month ? '?month=' + month : ''}`;
+
+  // Buka di tab baru → browser otomatis download
+  window.open(url, '_blank');
 }

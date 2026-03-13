@@ -41,7 +41,11 @@ def create_app():
     from routes.auth import auth_bp
     from routes.transactions import transactions_bp
     from routes.dashboard import dashboard_bp
-
+    from routes.categories import categories_bp
+    from routes.export import export_bp
+    
+    app.register_blueprint(export_bp)
+    app.register_blueprint(categories_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(transactions_bp)
     app.register_blueprint(dashboard_bp)

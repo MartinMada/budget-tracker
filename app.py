@@ -4,16 +4,15 @@ from database import db
 from flask_login import LoginManager
 from extensions import limiter, csrf  # ← Import dari extensions.py
 from datetime import timedelta
+from flask_wtf.csrf import CSRFProtect, validate_csrf
+from flask import request as flask_request
 
 def create_app():
     app = Flask(__name__)
 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///budget.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SECRET_KEY'] = os.environ.get(
-        'SECRET_KEY',
-        os.urandom(32).hex()
-    )
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'fallback-dev-key-ganti-di-production')
 
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=2)
     app.config['SESSION_COOKIE_HTTPONLY']    = True
@@ -23,6 +22,11 @@ def create_app():
     db.init_app(app)
     limiter.init_app(app)
     csrf.init_app(app)
+    @app.before_request
+    def check_csrf():
+        # Endpoint API yang dipanggil JS menggunakan header X-CSRFToken
+        # Flask-WTF otomatis validasi dari header ini
+        pass
 
     login_manager = LoginManager()
     login_manager.init_app(app)

@@ -77,56 +77,70 @@ function renderTransactions(transactions) {
   `).join('');
 }
 
-// ── Tambah Transaksi ─────────────────────────────────────────
+function getCsrfToken() {
+    return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+}
+
+//Tambah Transaksi
 async function addTransaction() {
-  const title    = document.getElementById('title').value.trim();
-  const amount   = document.getElementById('amount').value;
-  const type     = document.getElementById('type').value;
-  const category = document.getElementById('category').value;
-  const date     = document.getElementById('date').value;
-  const note     = document.getElementById('note').value.trim();
+    const title    = document.getElementById('title').value.trim();
+    const amount   = document.getElementById('amount').value;
+    const type     = document.getElementById('type').value;
+    const category = document.getElementById('category').value;
+    const date     = document.getElementById('date').value;
+    const note     = document.getElementById('note').value.trim();
 
-  if (!title || !amount || !date) {
-    showToast('Judul, nominal, dan tanggal wajib diisi!', 'error');
-    return;
-  }
+    if (!title || !amount || !date) {
+        showToast('Judul, nominal, dan tanggal wajib diisi!', 'error');
+        return;
+    }
 
-  const btn = document.querySelector('button[onclick="addTransaction()"]');
-  btn.disabled    = true;
-  btn.innerHTML   = '<span class="spinner-border spinner-border-sm me-2"></span>Menyimpan...';
+    const btn = document.querySelector('button[onclick="addTransaction()"]');
+    btn.disabled  = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Menyimpan...';
 
-  const res = await fetch('/api/transactions', {
-    method : 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body   : JSON.stringify({ title, amount, type, category, date, note })
-  });
+    const res = await fetch('/api/transactions', {
+        method : 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken' : getCsrfToken()  // ← tambahan
+        },
+        body: JSON.stringify({ title, amount, type, category, date, note })
+    });
 
-  btn.disabled  = false;
-  btn.innerHTML = '<i class="bi bi-plus-lg me-1"></i> Tambah Transaksi';
+    btn.disabled  = false;
+    btn.innerHTML = '<i class="bi bi-plus-lg me-1"></i> Tambah Transaksi';
 
-  if (res.ok) {
-    document.getElementById('title').value  = '';
-    document.getElementById('amount').value = '';
-    document.getElementById('note').value   = '';
-    showToast('Transaksi berhasil ditambahkan! ✅', 'success');
-    loadTransactions();
-  } else {
-    showToast('Gagal menambahkan transaksi.', 'error');
-  }
+    if (res.ok) {
+        document.getElementById('title').value  = '';
+        document.getElementById('amount').value = '';
+        document.getElementById('note').value   = '';
+        showToast('Transaksi berhasil ditambahkan! ✅', 'success');
+        loadTransactions();
+    } else {
+        const err = await res.json();
+        showToast(err.error || 'Gagal menambahkan transaksi.', 'error');
+    }
 }
 
-// ── Hapus Transaksi ──────────────────────────────────────────
+//Hapus Transaksi
 async function deleteTransaction(id) {
-  if (!confirm('Yakin ingin menghapus transaksi ini?')) return;
+    if (!confirm('Yakin ingin menghapus transaksi ini?')) return;
 
-  const res = await fetch(`/api/transactions/${id}`, { method: 'DELETE' });
-  if (res.ok) {
-    showToast('Transaksi dihapus.', 'success');
-    loadTransactions();
-  }
+    const res = await fetch(`/api/transactions/${id}`, {
+        method : 'DELETE',
+        headers: {
+            'X-CSRFToken': getCsrfToken()  // ← tambahan
+        }
+    });
+
+    if (res.ok) {
+        showToast('Transaksi dihapus.', 'success');
+        loadTransactions();
+    }
 }
 
-// ── Toast Notifikasi ─────────────────────────────────────────
+// Toast Notifikasi
 function showToast(message, type = 'success') {
   const existing = document.getElementById('toast-notif');
   if (existing) existing.remove();

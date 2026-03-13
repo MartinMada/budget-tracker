@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,47 +9,63 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-  <!-- Google Fonts -->
+  <!-- Google Fonts: Orbitron + Rajdhani -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <!-- Custom CSS -->
   <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+
+  <!-- CSRF Token untuk JavaScript fetch() -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
-
 <body>
 
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg">
-    <div class="container">
+    <div class="container-fluid px-4">
 
       <a class="navbar-brand" href="/dashboard">
         <div class="brand-icon">💰</div>
         Prospr
       </a>
 
-      <div class="navbar-nav ms-auto d-flex flex-row align-items-center gap-1">
-        <a class="nav-link {% if request.path == '/dashboard' %}active{% endif %}" href="/dashboard">
-          <i class="bi bi-speedometer2"></i> Dashboard
-        </a>
-        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">
-          <i class="bi bi-arrow-left-right"></i> Transaksi
+      <!-- Mobile toggle (opsional, untuk layar sangat kecil) -->
+      <div class="navbar-nav ms-auto d-flex flex-row align-items-center gap-1 flex-wrap">
+
+        <a class="nav-link {% if request.path == '/dashboard' %}active{% endif %}"
+           href="/dashboard">
+          <i class="bi bi-speedometer2"></i>
+          <span>Dashboard</span>
         </a>
 
-        <!-- Info user yang sedang login -->
-        <div style="width:1px;height:20px;background:var(--border);margin:0 8px"></div>
-        <a href="/profile" class="nav-link {% if request.path == '/profile' %}active{% endif %}">
-          <i class="bi bi-person-circle me-1"></i>{{ current_user.username }}
+        <a class="nav-link {% if request.path == '/' %}active{% endif %}"
+           href="/">
+          <i class="bi bi-arrow-left-right"></i>
+          <span>Transaksi</span>
         </a>
-        <a href="/logout" class="nav-link" style="color:var(--expense) !important;margin-left:4px">
-          <i class="bi bi-box-arrow-right"></i> Logout
+
+        <!-- Divider -->
+        <div style="width:1px;height:18px;background:var(--border2);margin:0 4px"></div>
+
+        <!-- Link Profil -->
+        <a href="/profile"
+           class="nav-link {% if request.path == '/profile' %}active{% endif %}">
+          <i class="bi bi-person-circle"></i>
+          <span>{{ current_user.username }}</span>
         </a>
+
+        <!-- Logout -->
+        <a href="/logout" class="nav-link"
+           style="color:var(--neon-pink) !important;">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Logout</span>
+        </a>
+
       </div>
-
     </div>
   </nav>
 
-  <!-- Page Content -->
-  <div class="container py-4">
+  <!-- Page Content — container-fluid agar mengisi lebar penuh -->
+  <div class="container-fluid px-4 py-4">
     {% block content %}{% endblock %}
   </div>
 
@@ -61,5 +76,4 @@
   {% block scripts %}{% endblock %}
 
 </body>
-
 </html>

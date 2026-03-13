@@ -711,3 +711,158 @@ div[style*="background:var(--bg3)"][style*="border:1px solid var(--border)"] {
   .page-title    { font-size: 1.1rem; }
   .navbar-brand  { font-size: 0.9rem; }
 }
+
+/* ── Full width container ────────────────────────────────── */
+.container-fluid,
+.container {
+  max-width: 100% !important;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+
+/* Pastikan row mengisi penuh */
+.row { margin-left: 0 !important; margin-right: 0 !important; }
+
+/* ── Responsive Breakpoints ──────────────────────────────── */
+
+/* Tablet (768px - 992px) */
+@media (max-width: 992px) {
+  /* Form dan riwayat stack vertikal */
+  .col-lg-4, .col-lg-8 {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Card riwayat tidak perlu h-100 di mobile */
+  .card.h-100 { height: auto !important; }
+
+  /* Kurangi padding card */
+  .card-body { padding: 14px !important; }
+
+  .page-title  { font-size: 1.2rem; }
+  .page-subtitle { font-size: 12px; }
+}
+
+/* Mobile (< 768px) */
+@media (max-width: 768px) {
+  /* Navbar lebih compact */
+  .navbar { padding: 0.5rem 0; }
+  .navbar-brand { font-size: 0.95rem; }
+  .navbar .nav-link {
+    font-size: 11px;
+    padding: 5px 8px !important;
+  }
+
+  /* Page header stack vertikal */
+  .d-flex.justify-content-between.align-items-start {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  /* Tombol export & filter bulan full width di mobile */
+  .d-flex.gap-2.align-items-center.flex-wrap {
+    width: 100%;
+  }
+
+  .d-flex.gap-2.align-items-center.flex-wrap button,
+  .d-flex.gap-2.align-items-center.flex-wrap input[type="month"] {
+    width: 100% !important;
+  }
+
+  /* Card body lebih compact */
+  .card-body { padding: 12px !important; }
+  .card-header { padding: 11px 14px; }
+
+  /* Form gap lebih kecil */
+  .card-body.d-flex.flex-column.gap-3 { gap: 10px !important; }
+
+  /* Tipe & tanggal tetap side by side di mobile kecil */
+  .row.g-2 .col-6 { width: 50% !important; }
+
+  /* Transaction item lebih compact */
+  .transaction-item { padding: 10px 12px; }
+  .tx-icon { width: 32px; height: 32px; font-size: 13px; margin-right: 8px; }
+  .tx-title { font-size: 13px; }
+  .tx-amount { font-size: 12px; }
+  .badge-category { font-size: 9px; padding: 1px 6px; }
+  .tx-date { font-size: 10px; }
+
+  /* Summary cards stack */
+  .col-md-4 { width: 100% !important; max-width: 100% !important; }
+  .summary-value { font-size: 1.3rem; }
+
+  /* Charts lebih kecil di mobile */
+  .chart-wrapper { height: 180px; }
+
+  /* Page title */
+  .page-title    { font-size: 1.1rem; }
+  .page-subtitle { font-size: 11px; }
+}
+
+/* Extra small (< 480px) */
+@media (max-width: 480px) {
+  .container { padding-left: 12px !important; padding-right: 12px !important; }
+
+  .navbar-brand { font-size: 0.85rem; }
+  .navbar .nav-link { font-size: 10px; padding: 4px 6px !important; }
+
+  /* Sembunyikan label nav, tampilkan icon saja */
+  .navbar .nav-link span { display: none; }
+
+  .tx-amount { font-size: 11px; }
+  .summary-value { font-size: 1.1rem; }
+  .card-header { font-size: 10px; }
+}
+
+/* ── Fix: Riwayat mengisi sisa ruang di desktop ──────────── */
+@media (min-width: 992px) {
+  .col-lg-8 .card {
+    min-height: 100%;
+  }
+
+  /* Pastikan transaction list tidak ada ruang kosong */
+  #transactionList {
+    min-height: 200px;
+  }
+}
+
+/* ── Fix: Tombol cancel edit hover ──────────────────────── */
+#cancelBtn:hover {
+  color: var(--neon-pink) !important;
+  border-color: rgba(255,0,170,0.3) !important;
+  background: rgba(255,0,170,0.05) !important;
+}
+
+/* ── Fix: Month input full width di mobile ───────────────── */
+@media (max-width: 768px) {
+  input[type="month"].w-auto {
+    width: 100% !important;
+  }
+}
+
+/* ── Stat Row di Profil ──────────────────────────────────── */
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background: var(--bg3);
+  border-radius: 4px;
+  border: 1px solid rgba(0,255,180,0.1);
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--muted2);
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+.stat-value {
+  font-size: 13px;
+  color: var(--text);
+  font-weight: 600;
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 0.03em;
+}

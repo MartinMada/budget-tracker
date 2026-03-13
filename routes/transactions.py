@@ -113,3 +113,31 @@ def delete_transaction(id):
     db.session.delete(transaction)
     db.session.commit()
     return jsonify({'message': 'Terhapus!'})
+
+@transactions_bp.route('/api/transactions/<int:id>', methods=['PUT'])
+@login_required
+def update_transaction(id):
+    # Pastikan transaksi milik user yang login
+    transaction = Transaction.query.filter_by(
+        id=id, user_id=current_user.id
+    ).first_or_404()
+
+    data = request.get_json(silent=True)
+    if not data:
+        return jsonify({'error': 'Data tidak valid.'}), 400
+
+    # Validasi pakai fungsi yang sama
+    is_valid, error_msg = validate_transaction(data)
+    if not is_valid:
+        return jsonify({'error': error_msg}), 400
+
+    # Update field
+    transaction.title    = str(data['title']).strip()
+    transaction.amount   = float(data['amount'])
+    transaction.type     = data['type']
+    transaction.category = data['category']
+    transaction.date     = datetime.strptime(data['date'], '%Y-%m-%d').date()
+    transaction.note     = str(data.get('note', '')).strip()[:200]
+
+    db.session.commit()
+    return jsonify({'message': 'Transaksi berhasil diupdate!', 'data': transaction.to_dict()})

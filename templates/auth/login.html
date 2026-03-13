@@ -1,212 +1,368 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login — Prospr</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #0a0a0f;
-            --bg2: #111118;
-            --bg3: #1a1a24;
-            --border: rgba(255, 255, 255, 0.07);
-            --accent: #7b61ff;
-            --text: #f0f0f8;
-            --muted: #6b6b80;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Prospr</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:         #000000;
+      --bg2:        #080810;
+      --bg3:        #0d0d1a;
+      --border:     rgba(0,255,180,0.12);
+      --border2:    rgba(0,255,180,0.28);
+      --neon-green: #00ffb4;
+      --neon-cyan:  #00e5ff;
+      --neon-purple:#bf00ff;
+      --neon-pink:  #ff00aa;
+      --text:       #e8fff8;
+      --muted:      #4a7a66;
+      --muted2:     #6aaa88;
+    }
 
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'DM Sans', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(123, 97, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(123, 97, 255, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
-            pointer-events: none;
-        }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Rajdhani', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+    }
 
-        .auth-card {
-            background: var(--bg2);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 40px;
-            width: 100%;
-            max-width: 420px;
-            position: relative;
-            z-index: 1;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            animation: fadeUp 0.4s ease;
-        }
+    /* Grid background */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,255,180,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,180,0.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none; z-index: 0;
+    }
 
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
+    /* Scanline */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(0,255,180,0.012) 2px, rgba(0,255,180,0.012) 4px
+      );
+      pointer-events: none; z-index: 0;
+    }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    .auth-wrapper {
+      position: relative; z-index: 1;
+      width: 100%; max-width: 420px;
+    }
 
-        .brand {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--text);
-            text-align: center;
-            margin-bottom: 6px;
-        }
+    .auth-card {
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      border-radius: 8px;
+      padding: 40px 36px;
+      box-shadow: 0 0 60px rgba(0,255,180,0.08), 0 0 120px rgba(191,0,255,0.04);
+      animation: fadeUp 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
 
-        .subtitle {
-            color: var(--muted);
-            font-size: 13.5px;
-            text-align: center;
-            margin-bottom: 32px;
-        }
+    /* Neon top border */
+    .auth-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--neon-green), var(--neon-purple), transparent);
+    }
 
-        .form-label {
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--muted);
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-        }
+    /* Corner accent kanan bawah */
+    .auth-card::after {
+      content: '';
+      position: absolute; bottom: 0; right: 0;
+      width: 60px; height: 60px;
+      border-bottom: 1px solid var(--border2);
+      border-right: 1px solid var(--border2);
+      border-radius: 0 0 8px 0;
+    }
 
-        .form-control {
-            background: var(--bg3) !important;
-            border: 1px solid var(--border) !important;
-            color: var(--text) !important;
-            border-radius: 10px !important;
-            padding: 11px 14px !important;
-            font-family: 'DM Sans', sans-serif !important;
-        }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
-        .form-control:focus {
-            border-color: var(--accent) !important;
-            box-shadow: 0 0 0 3px rgba(123, 97, 255, 0.15) !important;
-        }
+    /* ── Brand ── */
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
 
-        .form-control::placeholder {
-            color: var(--muted) !important;
-        }
+    .brand-text {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: 1.6rem;
+      letter-spacing: 0.1em;
+      background: linear-gradient(135deg, #00ffb4, #bf00ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #7b61ff, #9d87ff) !important;
-            border: none !important;
-            border-radius: 10px !important;
-            padding: 12px !important;
-            font-weight: 500 !important;
-            box-shadow: 0 4px 14px rgba(123, 97, 255, 0.35) !important;
-            transition: all 0.2s !important;
-        }
+    .subtitle {
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted2);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+      font-family: 'Rajdhani', sans-serif;
+    }
 
-        .btn-primary:hover {
-            transform: translateY(-1px) !important;
-            box-shadow: 0 6px 20px rgba(123, 97, 255, 0.5) !important;
-        }
+    /* ── Form ── */
+    .form-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted2);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+      display: block;
+      font-family: 'Rajdhani', sans-serif;
+    }
 
-        .auth-link {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 500;
-        }
+    .form-control {
+      background: var(--bg3) !important;
+      border: 1px solid rgba(0,255,180,0.18) !important;
+      color: var(--text) !important;
+      border-radius: 4px !important;
+      padding: 11px 14px !important;
+      font-size: 14px !important;
+      font-family: 'Rajdhani', sans-serif !important;
+      font-weight: 500 !important;
+      letter-spacing: 0.03em;
+      transition: all 0.2s !important;
+      -webkit-text-fill-color: var(--text) !important;
+      width: 100%;
+    }
 
-        .auth-link:hover {
-            color: #9d87ff;
-        }
+    .form-control:focus {
+      border-color: var(--neon-green) !important;
+      box-shadow: 0 0 0 2px rgba(0,255,180,0.12),
+                  0 0 12px rgba(0,255,180,0.15) !important;
+      outline: none !important;
+      background: #111120 !important;
+    }
 
-        .alert-error {
-            background: rgba(255, 92, 122, 0.1);
-            border: 1px solid rgba(255, 92, 122, 0.3);
-            color: #ff5c7a;
-            border-radius: 10px;
-            padding: 10px 14px;
-            font-size: 13.5px;
-            margin-bottom: 16px;
-        }
+    .form-control::placeholder {
+      color: var(--muted) !important;
+      -webkit-text-fill-color: var(--muted) !important;
+    }
 
-        .alert-success {
-            background: rgba(0, 212, 170, 0.1);
-            border: 1px solid rgba(0, 212, 170, 0.3);
-            color: #00d4aa;
-            border-radius: 10px;
-            padding: 10px 14px;
-            font-size: 13.5px;
-            margin-bottom: 16px;
-        }
+    input:-webkit-autofill,
+    input:-webkit-autofill:focus {
+      -webkit-text-fill-color: var(--text) !important;
+      -webkit-box-shadow: 0 0 0px 1000px var(--bg3) inset !important;
+    }
 
-        .form-check-input {
-            background-color: var(--bg3) !important;
-            border-color: var(--border) !important;
-        }
+    .form-group { margin-bottom: 18px; }
 
-        .form-check-input:checked {
-            background-color: var(--accent) !important;
-            border-color: var(--accent) !important;
-        }
+    /* ── Checkbox ── */
+    .form-check { display: flex; align-items: center; gap: 8px; }
+    .form-check-input {
+      background-color: var(--bg3) !important;
+      border: 1px solid rgba(0,255,180,0.3) !important;
+      border-radius: 2px !important;
+      width: 15px; height: 15px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .form-check-input:checked {
+      background-color: var(--neon-green) !important;
+      border-color: var(--neon-green) !important;
+    }
+    .form-check-label {
+      font-size: 13px;
+      color: var(--muted2);
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+    }
 
-        .form-check-label {
-            color: var(--muted);
-            font-size: 13px;
-        }
-    </style>
+    /* ── Button ── */
+    .btn-neon {
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--neon-green);
+      color: var(--neon-green);
+      border-radius: 4px;
+      padding: 12px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 0 12px rgba(0,255,180,0.15);
+      position: relative;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .btn-neon::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--neon-green);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .btn-neon:hover {
+      color: #000;
+      box-shadow: 0 0 20px rgba(0,255,180,0.4);
+    }
+
+    .btn-neon:hover::before { opacity: 1; }
+    .btn-neon span { position: relative; z-index: 1; }
+
+    /* ── Alert ── */
+    .alert-error {
+      background: rgba(255,0,170,0.07);
+      border: 1px solid rgba(255,0,170,0.3);
+      border-left: 3px solid var(--neon-pink);
+      color: var(--neon-pink);
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      margin-bottom: 20px;
+    }
+
+    .alert-success {
+      background: rgba(0,255,180,0.07);
+      border: 1px solid rgba(0,255,180,0.3);
+      border-left: 3px solid var(--neon-green);
+      color: var(--neon-green);
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      margin-bottom: 20px;
+    }
+
+    /* ── Footer link ── */
+    .auth-footer {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--muted2);
+      letter-spacing: 0.03em;
+    }
+
+    .auth-footer a {
+      color: var(--neon-cyan);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .auth-footer a:hover { color: var(--neon-green); }
+
+    /* ── Divider ── -->
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(0,255,180,0.08);
+      margin: 24px 0;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: rgba(0,255,180,0.3); border-radius: 2px; }
+  </style>
 </head>
-
 <body>
-    <div class="auth-card">
-        <div class="brand">💰 Prospr</div>
-        <div class="subtitle">Masuk ke akun Anda</div>
+<div class="auth-wrapper">
+  <div class="auth-card">
 
-        <!-- Flash messages -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        {% for category, message in messages %}
-        <div class="alert-{{ category }}">{{ message }}</div>
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
-
-        <form method="POST" action="/login">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <div class="mb-3">
-                <label class="form-label">Username atau Email</label>
-                <input type="text" name="login_input" class="form-control" placeholder="Masukkan username atau email"
-                    required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" placeholder="Masukkan password" required>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="remember" id="remember">
-                    <label class="form-check-label" for="remember">Ingat saya</label>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Masuk</button>
-        </form>
-
-        <p class="text-center mt-4" style="color:var(--muted);font-size:13.5px">
-            Belum punya akun?
-            <a href="/register" class="auth-link">Daftar sekarang</a>
-        </p>
+    <!-- Logo -->
+    <div class="brand">
+      <svg width="42" height="42" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#00ffb4"/>
+            <stop offset="100%" stop-color="#bf00ff"/>
+          </linearGradient>
+          <linearGradient id="hf" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#00ffb4" stop-opacity="0.1"/>
+            <stop offset="100%" stop-color="#bf00ff" stop-opacity="0.1"/>
+          </linearGradient>
+        </defs>
+        <polygon points="19,2 34,10.5 34,27.5 19,36 4,27.5 4,10.5"
+                 fill="url(#hf)" stroke="url(#hg)" stroke-width="1.5"/>
+        <polygon points="22,8 13,21 19,21 16,31 27,18 20,18" fill="url(#hg)"/>
+        <line x1="5" y1="13" x2="9" y2="11" stroke="#bf00ff" stroke-width="1" stroke-linecap="round" opacity="0.7"/>
+        <line x1="33" y1="19" x2="37" y2="19" stroke="#00ffb4" stroke-width="1" stroke-linecap="round" opacity="0.7"/>
+        <line x1="32" y1="28" x2="36" y2="31" stroke="#bf00ff" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
+      </svg>
+      <span class="brand-text">PROSPR</span>
     </div>
-</body>
 
+    <p class="subtitle">Masuk ke akun Anda</p>
+
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <!-- Form Login -->
+    <form method="POST" action="/login">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+      <div class="form-group">
+        <label class="form-label">Username atau Email</label>
+        <input type="text" name="login_input" class="form-control"
+               placeholder="Masukkan username atau email" required autofocus>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-control"
+               placeholder="Masukkan password" required>
+      </div>
+
+      <div class="form-check mb-4">
+        <input class="form-check-input" type="checkbox" name="remember" id="remember">
+        <label class="form-check-label" for="remember">Ingat saya</label>
+      </div>
+
+      <button type="submit" class="btn-neon">
+        <span>⚡ Masuk</span>
+      </button>
+    </form>
+
+    <hr class="divider">
+
+    <div class="auth-footer">
+      Belum punya akun?
+      <a href="/register">Daftar sekarang</a>
+    </div>
+
+  </div>
+</div>
+</body>
 </html>

@@ -875,3 +875,71 @@ div[style*="background:var(--bg3)"][style*="border:1px solid var(--border)"] {
   background-clip: text;
   text-shadow: none !important;
 }
+
+/* ── Fix mobile transaction item ─────────────────────────── */
+@media (max-width: 768px) {
+
+  /* Pastikan item tidak overflow */
+  .transaction-item {
+    padding: 10px 10px;
+    gap: 6px;
+  }
+
+  /* Kiri: icon + info — beri batas maksimal agar tidak dorong kanan */
+  .transaction-item > .d-flex:first-child {
+    flex: 1;
+    min-width: 0;  /* penting agar bisa shrink */
+    overflow: hidden;
+  }
+
+  /* Judul tidak wrap aneh */
+  .tx-title {
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px;
+  }
+
+  /* Meta row: badge + tanggal */
+  .tx-meta {
+    flex-wrap: nowrap;
+    gap: 5px;
+    overflow: hidden;
+  }
+
+  /* Badge tidak terpotong */
+  .badge-category {
+    font-size: 9px;
+    padding: 1px 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Tanggal tidak terpotong */
+  .tx-date {
+    font-size: 10px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Kanan: nominal + tombol — jangan shrink */
+  .transaction-item > .d-flex:last-child {
+    flex-shrink: 0;
+    gap: 4px;
+    align-items: center;
+  }
+
+  /* Nominal lebih kecil di mobile */
+  .tx-amount {
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  /* Tombol edit & hapus — pastikan tidak terpotong */
+  .btn-delete {
+    padding: 4px 5px;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+}

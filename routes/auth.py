@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from database import db
 from models import User
-from app import limiter
+from extensions import limiter # ← Import limiter dari extensions.py
 import re
 
 auth_bp = Blueprint('auth', __name__)

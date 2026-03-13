@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register — Budget Tracker</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0f; --bg2: #111118; --bg3: #1a1a24;
+      --border: rgba(255,255,255,0.07); --accent: #7b61ff;
+      --text: #f0f0f8; --muted: #6b6b80;
+    }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh; display: flex;
+      align-items: center; justify-content: center;
+      padding: 24px 0;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(123,97,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(123,97,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px; pointer-events: none;
+    }
+    .auth-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 20px; padding: 40px; width: 100%;
+      max-width: 440px; position: relative; z-index: 1;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      animation: fadeUp 0.4s ease;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .brand { font-family: 'Syne', sans-serif; font-size: 1.5rem;
+      font-weight: 800; color: var(--text); text-align: center;
+      margin-bottom: 6px; }
+    .subtitle { color: var(--muted); font-size: 13.5px;
+      text-align: center; margin-bottom: 32px; }
+    .form-label { font-size: 12px; font-weight: 500; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.06em; }
+    .form-control {
+      background: var(--bg3) !important; border: 1px solid var(--border) !important;
+      color: var(--text) !important; border-radius: 10px !important;
+      padding: 11px 14px !important; font-family: 'DM Sans', sans-serif !important;
+    }
+    .form-control:focus {
+      border-color: var(--accent) !important;
+      box-shadow: 0 0 0 3px rgba(123,97,255,0.15) !important;
+    }
+    .form-control::placeholder { color: var(--muted) !important; }
+    .btn-primary {
+      background: linear-gradient(135deg, #7b61ff, #9d87ff) !important;
+      border: none !important; border-radius: 10px !important;
+      padding: 12px !important; font-weight: 500 !important;
+      box-shadow: 0 4px 14px rgba(123,97,255,0.35) !important;
+      transition: all 0.2s !important;
+    }
+    .btn-primary:hover { transform: translateY(-1px) !important; }
+    .auth-link { color: var(--accent); text-decoration: none; font-weight: 500; }
+    .auth-link:hover { color: #9d87ff; }
+    .alert-error {
+      background: rgba(255,92,122,0.1); border: 1px solid rgba(255,92,122,0.3);
+      color: #ff5c7a; border-radius: 10px; padding: 10px 14px;
+      font-size: 13.5px; margin-bottom: 16px;
+    }
+    .alert-success {
+      background: rgba(0,212,170,0.1); border: 1px solid rgba(0,212,170,0.3);
+      color: #00d4aa; border-radius: 10px; padding: 10px 14px;
+      font-size: 13.5px; margin-bottom: 16px;
+    }
+    .password-hint { font-size: 11.5px; color: var(--muted); margin-top: 5px; }
+  </style>
+</head>
+<body>
+  <div class="auth-card">
+    <div class="brand">💰 BudgetTrack</div>
+    <div class="subtitle">Buat akun baru</div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="/register">
+      <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input type="text" name="username" class="form-control"
+               placeholder="Contoh: john_doe" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" name="email" class="form-control"
+               placeholder="Contoh: john@email.com" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-control"
+               placeholder="Minimal 6 karakter" required>
+        <div class="password-hint">Minimal 6 karakter</div>
+      </div>
+      <div class="mb-4">
+        <label class="form-label">Konfirmasi Password</label>
+        <input type="password" name="confirm_password" class="form-control"
+               placeholder="Ulangi password Anda" required>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Buat Akun</button>
+    </form>
+
+    <p class="text-center mt-4" style="color:var(--muted);font-size:13.5px">
+      Sudah punya akun?
+      <a href="/login" class="auth-link">Masuk di sini</a>
+    </p>
+  </div>
+</body>
+</html>

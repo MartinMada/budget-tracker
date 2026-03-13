@@ -1,20 +1,23 @@
 from flask import Blueprint, jsonify, request, render_template
+from flask_login import login_required, current_user
 from database import db
 from models import Transaction
 
 dashboard_bp = Blueprint('dashboard', __name__)
 
-# Halaman dashboard
 @dashboard_bp.route('/dashboard')
+@login_required  # ← Proteksi: wajib login
 def dashboard():
     return render_template('index.html')
 
-# API: Data ringkasan untuk dashboard
 @dashboard_bp.route('/api/summary', methods=['GET'])
+@login_required
 def get_summary():
     month = request.args.get('month')
 
-    query = Transaction.query
+    # Filter hanya data milik user yang login
+    query = Transaction.query.filter_by(user_id=current_user.id)
+
     if month:
         year, mon = month.split('-')
         query = query.filter(
@@ -27,7 +30,6 @@ def get_summary():
     total_income  = sum(t.amount for t in transactions if t.type == 'income')
     total_expense = sum(t.amount for t in transactions if t.type == 'expense')
 
-    # Data per kategori untuk grafik
     categories = {}
     for t in transactions:
         if t.type == 'expense':
